@@ -13,11 +13,13 @@ import './index.css';
 // Start [Dev only]
 import WebFontLoader from 'webfontloader';
 import App from './App';
+import ScreenShot from './screens/ScreenShot';
 WebFontLoader.load({
 	google: {
 		families: ['Roboto:300,400,500,700', 'Material Icons']
 	}
 });
+const jsx = <App />;
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(jsx, document.getElementById('root'));
 // End
