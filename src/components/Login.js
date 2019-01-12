@@ -18,9 +18,11 @@ export default class Login extends Component {
 				if (data.success) {
 					chrome.storage.sync.set({ token: data.token }, () => {
 						console.log('Authentication Success!');
+						// console.log(data);
 						this.setState({ success: true });
 						this.setState({ email: '', password: '' });
 						setTimeout(() => {
+							this.props.setUser(data.user);
 							this.props.setToken(data.token, true);
 						}, 2000);
 					});

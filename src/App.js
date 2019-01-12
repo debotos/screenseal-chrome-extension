@@ -7,7 +7,7 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<ScreenShot setToken={this.props.setToken} />
+				<ScreenShot user={this.props.user} setToken={this.props.setToken} />
 			</div>
 		);
 	}

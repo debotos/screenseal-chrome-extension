@@ -1,9 +1,11 @@
 /*global chrome*/
 import React from 'react';
 import Frame, { FrameContextConsumer } from 'react-frame-component';
+import axios from 'axios';
 
 import App from './App';
 import Login from './components/Login';
+import { api_user_details_url } from './config/api_urls';
 
 const extension_static_files = [
 	<link
@@ -29,7 +31,7 @@ const MainApp = props => (
 				// Render Children
 				return (
 					<div className={'my-extension'}>
-						<App setToken={props.setToken} />
+						<App user={props.user} setToken={props.setToken} />
 					</div>
 				);
 			}}
@@ -41,10 +43,23 @@ class Extension extends React.Component {
 	componentWillMount() {
 		chrome.storage.sync.get(['token'], result => {
 			this.setToken(result.token);
+			if (result.token) {
+				this.geUserInfo(result.token);
+			}
 		});
 	}
+	geUserInfo = async token => {
+		let config = {
+			headers: { Authorization: `Token ${token}` }
+		};
+		let { data } = await axios.get(api_user_details_url, config);
+		let { user } = data;
+		// console.log('User logged in getting info ', user);
+		this.setState({ user });
+	};
 	state = {
-		token: ''
+		token: '',
+		user: null
 	};
 	setToken = (token, save = false) => {
 		if (save) {
@@ -56,12 +71,15 @@ class Extension extends React.Component {
 			this.setState({ token });
 		}
 	};
+	setUser = user => {
+		this.setState({ user });
+	};
 	render() {
-		const { token } = this.state;
+		const { token, user } = this.state;
 		if (token) {
-			return <MainApp setToken={this.setToken} />;
+			return <MainApp user={user} setToken={this.setToken} />;
 		} else {
-			return <Login setToken={this.setToken} />;
+			return <Login setUser={this.setUser} setToken={this.setToken} />;
 		}
 	}
 }
