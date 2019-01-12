@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { Component } from 'react';
 import { SelectField, Button, FontIcon } from 'react-md';
 
@@ -42,7 +43,24 @@ export default class ScreenShotActions extends Component {
 
 	handleCaptureScreen = e => {
 		e.preventDefault();
-		console.log(this.state);
+		if (this.state.portion === 'full') {
+			this.captureFullScreen(this.state.format);
+		} else {
+			this.captureVisibleScreen(this.state.format);
+		}
+	};
+
+	captureFullScreen = format => {
+		console.log('Capturing Screen -> ', format);
+	};
+
+	captureVisibleScreen = format => {
+		console.log('Capturing Screen -> ', format);
+		chrome.runtime.sendMessage({ action: 'capture', format }, function(
+			response
+		) {
+			console.log(response);
+		});
 	};
 
 	render() {

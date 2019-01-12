@@ -14,7 +14,7 @@
     "128": "icon/icon128.png"
   },
   "permissions": [
-    "storage", "activeTab", "unlimitedStorage"
+    "storage", "activeTab", "unlimitedStorage", "tabs"
   ],
   "browser_action": {},
   "content_scripts": [{
